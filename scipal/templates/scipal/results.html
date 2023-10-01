@@ -1,0 +1,61 @@
+{% extends 'scipal/base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+{% load static %}
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">Results</h1>
+        <p class="lead text-muted">See the results of your query below!</p>
+    </div>
+</section>
+
+<div class="album py-5 bg-light">
+    <div class="container">
+
+        <div class="row">
+            {% if results %}
+            {% for result in results %}
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <form action="{% url 'scipal:similar' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="similarUrl" value="{{result.url}}">
+                            <input type="hidden" name="crawlDate2" value="{{result.published_date}}">
+                            <p class="card-text"><a href="{{result.url}}">{{result.title}}</a></p>
+                            <p>Author: {{result.author}}</p>
+                            <p>Score: {{result.score}}</p>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Find Similar Papers
+                                    </button>
+                                </div>
+                                <small class="text-muted">{{result.published_date}}</small>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>No results found :(</p>
+            <p><a href="{% url 'scipal:index' %}">Please go back and try again</a></p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'scipal/base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+{% load static %}
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">Welcome to SciPal</h1>
+        <p class="lead text-muted">A Metaphor-powered search for finding scientific papers!</p>
+    </div>
+</section>
+
+<div class="container text-center">
+    <div class="row align-items-center">
+
+        <p class="lead text-muted">Choose one of the two options below:</p>
+
+        <div class="col">
+            <form action="{% url 'scipal:find' %}" method="post">
+                {% csrf_token %}
+                <fieldset>
+                    <p class="lead text-muted">1. Find a paper</p>
+                    <div class="form-group">
+                        <textarea class="form-control" rows="5" name="comment" id="comment"
+                                  placeholder="Enter information about the scientific paper you want."></textarea>
+                    </div>
+                    <br>
+                    <p class="lead text-muted">What type of paper?</p>
+                    <select class="form-control" name="docType" id="docType">
+                        <option>Original Research Article</option>
+                        <option>Review Article</option>
+                        <option>Clinical Paper</option>
+                        <option>Perspective/Opinion Article</option>
+                    </select>
+                    <br>
+                    <p class="lead text-muted">How old should the paper be?</p>
+                    <input class="form-control" name="crawlDate" id="crawlDate" aria-describedby="emailHelp"
+                           placeholder="YYYY-MM-DD">
+                </fieldset>
+                <br>
+                {% buttons %}
+                <button type="submit" class="btn btn-primary">
+                    Find a scientific paper
+                </button>
+                {% endbuttons %}
+            </form>
+
+            {% if error_message1 %}
+            <div class="alert alert-warning" role="alert">{{ error_message1 }}</div>
+            {% endif %}
+
+        </div>
+        <div class="col">
+            <form action="{% url 'scipal:similar' %}" method="post">
+                {% csrf_token %}
+                <fieldset>
+                    <p class="lead text-muted">2. Find a similar paper</p>
+                    <input class="form-control" name="similarUrl" id="similarUrl" aria-describedby="emailHelp"
+                           placeholder="Enter the url of a scientific paper.">
+                    <br>
+                    <br>
+                    <p class="lead text-muted">How old should the paper be?</p>
+                    <input class="form-control" name="crawlDate2" id="crawl_date2" aria-describedby="emailHelp"
+                           placeholder="YYYY-MM-DD">
+                </fieldset>
+                <br>
+                {% buttons %}
+                <button type="submit" class="btn btn-secondary">
+                    Find a similar scientific paper
+                </button>
+                {% endbuttons %}
+            </form>
+
+            {% if error_message2 %}
+            <div class="alert alert-warning" role="alert">{{ error_message2 }}</div>
+            {% endif %}
+        </div>
+
+
+    </div>
+</div>
+
+{% endblock %}
