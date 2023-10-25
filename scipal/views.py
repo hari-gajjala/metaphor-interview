@@ -12,6 +12,43 @@ def results(request):
 
 
 def find(request):
+    scientific_domains = [
+        "academic.oup.com",
+        "ncbi.nlm.nih.gov",
+        "pubmed.ncbi.nlm.nih.gov",
+        "sciencedirect.com",
+        "onlinelibrary.wiley.com",
+        "link.springer.com",
+        "ahajournals.org",
+        "acc.org",
+        "oup.com",
+        "nature.com",
+        "jamanetwork.com",
+        "thelancet.com",
+        "ahajournals.org",
+        "oup.com",
+        "bmj.com",
+        "futuremedicine.com",
+        "dovepress.com",
+        "elsevier.com",
+        "cell.com",
+        "springer.com",
+        "frontiersin.org",
+        "pubs.acs.org",
+        "springer.com",
+        "nejm.org",
+        "crf.org",
+        "plos.org",
+        "lww.com",
+        "rsc.org",
+        "nature.com",
+        "lww.com",
+        "science.org",
+        "controlledreleasesociety.org",
+        "asianpubs.org",
+        "webofscience.com",
+    ]
+
     comment = request.POST['comment']
     doc_type = request.POST['docType']
     crawl_date = request.POST['crawlDate']
@@ -29,12 +66,50 @@ def find(request):
         f"{doc_type}s about the topic of {comment}.",
         num_results=6,
         start_crawl_date=crawl_date,
+        include_domains=scientific_domains,
     )
 
     return render(request, "scipal/results.html", {'results': response.results})
 
 
 def similar(request):
+    scientific_domains = [
+        "academic.oup.com",
+        "ncbi.nlm.nih.gov",
+        "pubmed.ncbi.nlm.nih.gov",
+        "sciencedirect.com",
+        "onlinelibrary.wiley.com",
+        "link.springer.com",
+        "ahajournals.org",
+        "acc.org",
+        "oup.com",
+        "nature.com",
+        "jamanetwork.com",
+        "thelancet.com",
+        "ahajournals.org",
+        "oup.com",
+        "bmj.com",
+        "futuremedicine.com",
+        "dovepress.com",
+        "elsevier.com",
+        "cell.com",
+        "springer.com",
+        "frontiersin.org",
+        "pubs.acs.org",
+        "springer.com",
+        "nejm.org",
+        "crf.org",
+        "plos.org",
+        "lww.com",
+        "rsc.org",
+        "nature.com",
+        "lww.com",
+        "science.org",
+        "controlledreleasesociety.org",
+        "asianpubs.org",
+        "webofscience.com",
+    ]
+
     similar_url = request.POST['similarUrl']
     crawl_date = request.POST['crawlDate2']
     if not similar_url or not crawl_date:
@@ -51,6 +126,7 @@ def similar(request):
         similar_url,
         num_results=6,
         start_crawl_date=crawl_date,
+        include_domains=scientific_domains,
     )
 
 
